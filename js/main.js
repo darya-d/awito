@@ -1,4 +1,4 @@
-'use strict'; // включаем строгий режим специальной директивой, весь последующий сценарий работает в «современном» режиме
+'use strict'; // включаем строгий режим 
 
 const modalAdd = document.querySelector('.modal__add');
 const addAd = document.querySelector('.add__ad');
@@ -29,34 +29,37 @@ const keyCodeEsc = 27;
 const closeModal = function(event) { 
     const target = event.target;
     if (target.closest('.modal__close') || target === this) { // target.keyCode === keyCodeEsc ?
-        this.classList.add('hide'); // прячем модалку объявлений
-        modalSubmit.reset(); // встроенный метод очищения формы (только для тега form)
+        this.classList.add('hide');                           // прячем модалку объявлений
+        if (this === modalAdd) {
+            modalSubmit.reset();                              // встроенный метод очищения формы (только для тега form)
+        }
     }
 };
 
-// ! const closeModalEsc = function(event) {
-//     if (event.keyCode === keyCodeEsc) {
-//         modalAdd.classList.add('hide'); // прячем модалку объявлений
-//         modalSubmit.reset(); // встроенный метод очищения формы (только для тега form)
-//     }
-// };
+// *Закрытие формы нажатием esc
+const closeModalEsc = function(event) {
+    if (event.keyCode === keyCodeEsc) {
+        modalAdd.classList.add('hide');                    // прячем модалку объявлений
+        modalSubmit.reset();                               // встроенный метод очищения формы (только для тега form)
+    }
+};
 
-addAd.addEventListener('click', () => { // () => - callback функция, срабатываемая при клике
-    modalAdd.classList.remove('hide'); // открывает модалку
-    modalBtnSubmit.disabled = true; // блокируем кнопку отправить
+addAd.addEventListener('click', () => {                       // () => - callback функция, срабатываемая при клике
+    modalAdd.classList.remove('hide');                        // открываем модалку
+    modalBtnSubmit.disabled = true;                           // блокируем кнопку отправить
 });
 
 
 modalAdd.addEventListener('click', closeModal);
 modalItem.addEventListener('click', closeModal);
-// ! document.addEventListener('keypress', closeModalEsc);
+document.addEventListener('keydown', closeModalEsc);
 
 
 catalog.addEventListener('click', event => {
     const target = event.target;
-
-    if (target.closest('.card')) {
-        modalItem.classList.remove('hide'); // открывает карточку
+    
+    if (target.closest('.card')) {                            // если у target родитель с классом .card
+        modalItem.classList.remove('hide');                   // открывает карточку
     }
 });
 
