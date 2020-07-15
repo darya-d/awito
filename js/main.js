@@ -25,7 +25,7 @@ const keyCodeEsc = 27;
 //     }
 // };
 
-// 2 вариант - Функция закрытия модального окна через this
+// *Функция закрытия модального окна через this
 const closeModal = function(event) { 
     const target = event.target;
     if (target.closest('.modal__close') || target === this) { // target.keyCode === keyCodeEsc ?
@@ -36,11 +36,12 @@ const closeModal = function(event) {
     }
 };
 
-// *Закрытие формы нажатием esc
-const closeModalEsc = function(event) {
-    if (event.keyCode === keyCodeEsc) {
-        modalAdd.classList.add('hide');                    // прячем модалку объявлений
-        modalSubmit.reset();                               // встроенный метод очищения формы (только для тега form)
+// *Функция закрытия формы нажатием esc
+const closeModalEsc = event => {
+    if (event.code === 'Escape') {
+        modalAdd.classList.add('hide');
+        modalItem.classList.add('hide');                       // прячем модалку объявлений
+        modalSubmit.reset();                                  // встроенный метод очищения формы (только для тега form)
     }
 };
 
