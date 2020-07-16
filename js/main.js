@@ -1,6 +1,6 @@
 'use strict'; // включаем строгий режим 
 
-const dataBase = [];
+const dataBase = JSON.parse(localStorage.getItem('awito')) || [];    // получаем данные из localstorage и методом .parse преобразуем json строку в массив. Если данных нет, то получаем пустой массив (в противном случае - null)
 
 const modalAdd = document.querySelector('.modal__add');
 const addAd = document.querySelector('.add__ad');
