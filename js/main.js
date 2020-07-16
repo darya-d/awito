@@ -8,40 +8,37 @@ const modalBtnSubmit = document.querySelector('.modal__btn-submit');
 const modalSubmit = document.querySelector('.modal__submit');
 const catalog = document.querySelector('.catalog');
 const modalItem = document.querySelector('.modal__item');
-const keyCodeEsc = 27;
 const modalBtnWarning = document.querySelector('.modal__btn-warning');
 const elementsModalSubmit = [...modalSubmit.elements]               // ... - оператор спред spread - всё, что итерируется, он записывает через запятую. Спред как масло размазваем.
     .filter(elem => elem.tagName !== 'BUTTON'                       // выбираем все элементы, кроме тега button или типа submit 
                     && elem.type !== 'submit');                   
 
-// *Функция закрытия модального окна через this
-const closeModal = function(event) { 
-    const target = event.target;
-    if (target.closest('.modal__close') || target === this) {       // target.keyCode === keyCodeEsc ?
-        this.classList.add('hide');                                 // прячем модалку объявлений
-        if (this === modalAdd) {
-            modalSubmit.reset();                                    // встроенный метод очищения формы (только для тега form)
-        }
-    }
-};
-
-// *Функция закрытия формы нажатием esc
-const closeModalEsc = event => {
-    if (event.code === 'Escape') {
-        modalAdd.classList.add('hide');
-        modalItem.classList.add('hide');                            // прячем модалку объявлений
-        modalSubmit.reset();                                        // встроенный метод очищения формы (только для тега form)
-        document.removeEventListener('keydown', closeModalEsc);     // удаляем событие закрытия модалки нажатием esc  
-    }
-};
-
-// * Событие - убираем надпись "Заполните все поля" и разблокируем кнопку отправки при внесения данных в поля input, textarea, select
-modalSubmit.addEventListener('input', () => {                           // событие input - отрабатывает при внесении изменений в value у тегов input, select или textarea
+// *Функция проверки заполнения всех полей формы
+const checkForm = () => {
     const validForm = elementsModalSubmit.every(elem => elem.value);    // методом every проверяем все элементы в массиве. 
                                                                         // если все элементы вернут true - значение переменной будет true. Если хоть одно вернет false - будет false.  
     modalBtnSubmit.disabled = !validForm;                               // разблокируем кнопку отправки при значении !true (то есть false) переменной validForm
     modalBtnWarning.style.display = validForm ? 'none' : '';            // тернарный оператор. Если validForm true - присваиваем display = 'none';
-})
+}
+
+// *Функция закрытия модального окна по клику на крестик, вне формы или нажатием esc
+const closeModal = event => { 
+    const target = event.target;
+
+    if (target.closest('.modal__close') || 
+        target.classList.contains('modal-js') || 
+        event.code === 'Escape') { 
+            modalAdd.classList.add('hide');  
+            modalItem.classList.add('hide');                            // прячем модалку объявлений
+            document.removeEventListener('keydown', closeModal);        // удаляем обработчик нажатия esc
+            modalSubmit.reset();                                        // встроенный метод очищения формы (только для тега form)
+            checkForm();
+        }
+};
+
+
+// * Событие - убираем надпись "Заполните все поля" и разблокируем кнопку отправки при внесения данных в поля input, textarea, select
+modalSubmit.addEventListener('input', checkForm);
 
 // * Событие - отключаем обновление страницы, создаем новый объект в локальной БД после отправки формы Подачи объявления
 modalSubmit.addEventListener('submit', () => {  
@@ -54,7 +51,7 @@ modalSubmit.addEventListener('submit', () => {
     
     dataBase.push(itemObject);                                          // добавляем новое объявление - объект - в массив dataBase
     modalSubmit.reset();                                                // очищаем форму после отправки
-    
+    closeModal({target: modalAdd});                                       // закрываем модалку с назначением объекту target 
     console.log(dataBase);
 });
 
@@ -62,7 +59,7 @@ modalSubmit.addEventListener('submit', () => {
 addAd.addEventListener('click', () => {                             // () => - callback функция, срабатываемая при клике
     modalAdd.classList.remove('hide');                              // открываем модалку
     modalBtnSubmit.disabled = true;                                 // блокируем кнопку отправить
-    document.addEventListener('keydown', closeModalEsc);            // событие закрытия модалки нажатием esc                   
+    document.addEventListener('keydown', closeModal);               // событие закрытия модалки нажатием esc                   
 });
 
 // * Событие отрытия модалки при клике на любую карточку из каталога
@@ -71,7 +68,7 @@ catalog.addEventListener('click', event => {
     
     if (target.closest('.card')) {                                  // выясняем, если у target родитель с классом .card
         modalItem.classList.remove('hide');                         // открываем карточку
-        document.addEventListener('keydown', closeModalEsc);        // событие закрытия модалки нажатием esc  
+        document.addEventListener('keydown', closeModal);        // событие закрытия модалки нажатием esc  
     }
 });
 
