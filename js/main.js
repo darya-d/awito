@@ -59,10 +59,15 @@ modalFileInput.addEventListener('change', event => {                    // chang
 
     reader.readAsBinaryString(file);                                    // методом readAsBinaryString отслеживаем появления файла file и начинаем считывать его содержимого
     reader.addEventListener('load', event => {                          // событие load срабатывает когда файл file будет загружен
-        modalFileBtn.textContent = infoPhoto.name;                      // меняем текст "Добавить фото" на имя файла - картинки
-        infoPhoto.base64 = btoa(event.target.result);                   // функция btoa() конвертирует картинку в строку
-        modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}` || `data:image/png;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную
-    });                                                      
+        if (infoPhoto.size < 2000000) {
+            modalFileBtn.textContent = infoPhoto.name;                      // меняем текст "Добавить фото" на имя файла - картинки
+            infoPhoto.base64 = btoa(event.target.result);                   // функция btoa() конвертирует картинку в строку
+            modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}` || `data:image/png;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную    
+        } else {
+            modalFileBtn.textContent = 'Размер файла превышает 2Мб.'
+        }
+    });   
+    
 });
 
 // * Событие - убираем надпись "Заполните все поля" и разблокируем кнопку отправки при внесения данных в поля input, textarea, select
