@@ -61,7 +61,7 @@ modalFileInput.addEventListener('change', event => {                    // chang
     reader.addEventListener('load', event => {                          // событие load срабатывает когда файл file будет загружен
         modalFileBtn.textContent = infoPhoto.name;                      // меняем текст "Добавить фото" на имя файла - картинки
         infoPhoto.base64 = btoa(event.target.result);                   // функция btoa() конвертирует картинку в строку
-        modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную
+        modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}` || `data:image/png;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную
     });                                                      
 });
 
