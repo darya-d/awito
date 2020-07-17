@@ -46,10 +46,25 @@ const closeModal = event => {
             modalItem.classList.add('hide');                            // прячем модалку объявлений.
             document.removeEventListener('keydown', closeModal);        // удаляем обработчик нажатия esc.
             modalSubmit.reset();                                        // встроенный метод очищения формы (только для тега form).
-            checkForm();
             modalImageAdd.src = srcModalImageAdd;                       // сбрасываем загруженную ранее картинку к той, что по умолч.
             modalFileBtn.textContent = textModalFileBtn;                // сбрасываем текст кнопки к "Добавить фото"
+            checkForm();
         }
+};
+
+const renderCard = () => {
+    catalog.textContent= '';                                            // очищаем каталог 
+    dataBase.forEach((item, i) => {                                     // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
+        catalog.insertAdjacentHTML('beforeend', `                      
+            <li class="card" data-id="${i}">
+                <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test">
+                <div class="card__description">
+                    <h3 class="card__header">${item.nameItem}</h3>
+                    <div class="card__price">${item.costItem} ₽</div>
+                </div>
+            </li>
+        `);                   
+    });
 };
 
 // *Событие клика на input "Добавить фото"
@@ -68,9 +83,11 @@ modalFileInput.addEventListener('change', event => {                    // chang
         if (infoPhoto.size < 2000000) {
             modalFileBtn.textContent = infoPhoto.name;                      // меняем текст "Добавить фото" на имя файла - картинки
             infoPhoto.base64 = btoa(event.target.result);                   // функция btoa() конвертирует картинку в строку
-            modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}` || `data:image/png;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную    
+            modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную    
         } else {
-            modalFileBtn.textContent = 'Размер файла превышает 2Мб.'
+            modalFileBtn.textContent = 'Размер файла превышает 2Мб.';
+            modalFileInput.value = '';
+            checkForm();
         }
     });   
     
@@ -88,10 +105,12 @@ modalSubmit.addEventListener('submit', () => {
         itemObject[elem.name] = elem.value;                             // значение из name возьмется и сохранится как свойство объекта.
     } 
     
+    itemObject.image = infoPhoto.base64;
     dataBase.push(itemObject);                                          // добавляем новое объявление - объект - в массив dataBase.
     modalSubmit.reset();                                                // очищаем форму после отправки.
     closeModal({target: modalAdd});                                     // закрываем модалку с назначением объекту target .
     saveDataBase();                                                     // отправляем созданное объявление в LS.
+    renderCard();                                                       // добавляем новую карточку в каталог
 });
 
 // * Событие отрытия модалки при клике на кнопку "Подать объявление"
@@ -114,3 +133,5 @@ catalog.addEventListener('click', event => {
 
 modalAdd.addEventListener('click', closeModal);
 modalItem.addEventListener('click', closeModal);
+
+renderCard();
