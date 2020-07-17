@@ -11,6 +11,7 @@ const modalItem = document.querySelector('.modal__item');
 const modalBtnWarning = document.querySelector('.modal__btn-warning');
 const modalFileInput = document.querySelector('.modal__file-input');
 const modalFileBtn = document.querySelector('.modal__file-btn'); 
+const modalImageAdd = document.querySelector('.modal__image-add');
 const elementsModalSubmit = [...modalSubmit.elements]               // ... - оператор спред spread - всё, что итерируется, он записывает через запятую. Спред как масло. размазваем.
     .filter(elem => elem.tagName !== 'BUTTON'                       // выбираем все элементы, кроме тега button или типа submit.
                     && elem.type !== 'submit');                   
@@ -59,6 +60,8 @@ modalFileInput.addEventListener('change', event => {                    // chang
     reader.readAsBinaryString(file);                                    // методом readAsBinaryString отслеживаем появления файла file и начинаем считывать его содержимого
     reader.addEventListener('load', event => {                          // событие load срабатывает когда файл file будет загружен
         modalFileBtn.textContent = infoPhoto.name;                      // меняем текст "Добавить фото" на имя файла - картинки
+        infoPhoto.base64 = btoa(event.target.result);                   // функция btoa() конвертирует картинку в строку
+        modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}`;   // изменяем картинку по умолч. в объявлении на загруженную
     });                                                      
 });
 
