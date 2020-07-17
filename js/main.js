@@ -12,6 +12,10 @@ const modalBtnWarning = document.querySelector('.modal__btn-warning');
 const modalFileInput = document.querySelector('.modal__file-input');
 const modalFileBtn = document.querySelector('.modal__file-btn'); 
 const modalImageAdd = document.querySelector('.modal__image-add');
+
+const srcModalImageAdd = modalImageAdd.src;                         // путь картинки по умолч в объявлении
+const textModalFileBtn = modalFileBtn.textContent;                  // текст кнопки "Добавить фото"
+
 const elementsModalSubmit = [...modalSubmit.elements]               // ... - оператор спред spread - всё, что итерируется, он записывает через запятую. Спред как масло. размазваем.
     .filter(elem => elem.tagName !== 'BUTTON'                       // выбираем все элементы, кроме тега button или типа submit.
                     && elem.type !== 'submit');                   
@@ -43,6 +47,8 @@ const closeModal = event => {
             document.removeEventListener('keydown', closeModal);        // удаляем обработчик нажатия esc.
             modalSubmit.reset();                                        // встроенный метод очищения формы (только для тега form).
             checkForm();
+            modalImageAdd.src = srcModalImageAdd;                       // сбрасываем загруженную ранее картинку к той, что по умолч.
+            modalFileBtn.textContent = textModalFileBtn;                // сбрасываем текст кнопки к "Добавить фото"
         }
 };
 
