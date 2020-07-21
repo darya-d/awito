@@ -12,6 +12,11 @@ const modalBtnWarning = document.querySelector('.modal__btn-warning');
 const modalFileInput = document.querySelector('.modal__file-input');
 const modalFileBtn = document.querySelector('.modal__file-btn'); 
 const modalImageAdd = document.querySelector('.modal__image-add');
+const modalImageItem = document.querySelector('.modal__image-item');
+const modalHeaderItem = document.querySelector('.modal__header-item');
+const modalStatusItem = document.querySelector('.modal__status-item');
+const modalDescriptionItem = document.querySelector('.modal__description-item');
+const modalCostItem = document.querySelector('.modal__cost-item');
 
 const srcModalImageAdd = modalImageAdd.src;                         // путь картинки по умолч в объявлении
 const textModalFileBtn = modalFileBtn.textContent;                  // текст кнопки "Добавить фото"
@@ -56,7 +61,7 @@ const renderCard = () => {
     catalog.textContent= '';                                            // очищаем каталог 
     dataBase.forEach((item, i) => {                                     // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
         catalog.insertAdjacentHTML('beforeend', `                      
-            <li class="card" data-id="${i}">
+            <li class="card" data-id-item="${i}">
                 <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test">
                 <div class="card__description">
                     <h3 class="card__header">${item.nameItem}</h3>
@@ -123,8 +128,17 @@ addAd.addEventListener('click', () => {                             // () => - c
 // * Событие отрытия модалки при клике на любую карточку из каталога
 catalog.addEventListener('click', event => {
     const target = event.target;                                    // определяем target (в будущем - карточку).
-    
-    if (target.closest('.card')) {                                  // выясняем, если у target родитель с классом .card
+    const card = target.closest('.card');
+
+    if (card) {                                  // выясняем, если у target родитель с классом .card
+        const item = dataBase[card.dataset.idItem];
+        
+        modalImageItem.src = `data:image/jpeg;base64,${item.image}`;
+        modalHeaderItem.textContent = item.nameItem;
+        modalStatusItem.textContent = item.status === 'new' ? 'Новый' : 'Б/У';
+        modalDescriptionItem.textContent = item.descriptionItem;
+        modalCostItem.textContent = item.costItem;
+        
         modalItem.classList.remove('hide');                         // открываем карточку.
         document.addEventListener('keydown', closeModal);           // событие закрытия модалки нажатием esc.
     }
