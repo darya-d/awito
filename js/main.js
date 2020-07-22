@@ -61,7 +61,7 @@ const renderCard = () => {
     catalog.textContent= '';                                            // очищаем каталог 
     dataBase.forEach((item, i) => {                                     // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
         catalog.insertAdjacentHTML('beforeend', `                      
-            <li class="card" data-id-item="${i}">
+            <li class="card" data-id="${i}">
                 <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test">
                 <div class="card__description">
                     <h3 class="card__header">${item.nameItem}</h3>
@@ -131,7 +131,7 @@ catalog.addEventListener('click', event => {
     const card = target.closest('.card');
 
     if (card) {                                  // выясняем, если у target родитель с классом .card
-        const item = dataBase[card.dataset.idItem];
+        const item = dataBase[card.dataset.id];
         
         modalImageItem.src = `data:image/jpeg;base64,${item.image}`;
         modalHeaderItem.textContent = item.nameItem;
