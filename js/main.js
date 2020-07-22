@@ -83,7 +83,7 @@ searchInput.addEventListener('input', () => {
     if (valueSearch.length > 2) {
         const result = dataBase.filter(item => item.nameItem.toLowerCase().includes(valueSearch));
         renderCard(result);
-    }
+    };
 });
 
 // *Событие клика на input "Добавить фото"
