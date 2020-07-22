@@ -18,6 +18,8 @@ const modalStatusItem = document.querySelector('.modal__status-item');
 const modalDescriptionItem = document.querySelector('.modal__description-item');
 const modalCostItem = document.querySelector('.modal__cost-item');
 
+const searchInput = document.querySelector('.search__input');
+
 const srcModalImageAdd = modalImageAdd.src;                         // путь картинки по умолч в объявлении
 const textModalFileBtn = modalFileBtn.textContent;                  // текст кнопки "Добавить фото"
 
@@ -57,9 +59,11 @@ const closeModal = event => {
         }
 };
 
-const renderCard = () => {
+// *Функция рендера карточки с введенными данными
+const renderCard = (DB = dataBase) => {                                 // если фцкция будет вызываться пустой, то ей присвоится dataBase     
     catalog.textContent= '';                                            // очищаем каталог 
-    dataBase.forEach((item, i) => {                                     // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
+    
+    DB.forEach((item, i) => {                                           // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
         catalog.insertAdjacentHTML('beforeend', `                      
             <li class="card" data-id="${i}">
                 <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test">
@@ -72,12 +76,20 @@ const renderCard = () => {
     });
 };
 
+// *Событие добавления текста в поисковой input
+searchInput.addEventListener('input', () => {
+    const valueSearch = searchInput.value.trim().toLowerCase();           // метод trim убирает пробелы в начале и в конце у значения value; метод toLowerCase приводит весь текст в нижнему регистру
+
+    if (valueSearch.length > 2) {
+        const result = dataBase.filter(item => item.nameItem.toLowerCase().includes(valueSearch));
+        renderCard(result);
+    }
+});
+
 // *Событие клика на input "Добавить фото"
 modalFileInput.addEventListener('change', event => {                    // change срабатывает при изменении значения value у input                        
     const target = event.target;                                        // таргетом является наш input
-
     const reader = new FileReader();                                    // !конструктор FileReader - функция, которая при вызове возвращает объект
-
     const file = target.files[0];                                       // получаем наш файл - картинку
 
     infoPhoto.name = file.name;                                         // определяем название файла
