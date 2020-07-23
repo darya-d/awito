@@ -30,33 +30,72 @@
 <body>
 
 	<header>
-		<div class="container">
+			<!--Меню навигационное-->
 			<div class="header">
-				<div class="logo">
-					<a href="index.html">
-						<img src="img/logo.svg" alt="">
-					</a>
+				<div class="header-top">
+					<div class="container">
+						<nav class="menu">
+							<ul class="menu__container">
+								<li class="menu__item">
+									<a class="menu__link active" href="#">Объявления</a>
+								</li>
+								<li class="menu__item">
+									<a class="menu__link" href="#">Магазины</a>
+								</li>
+								<li class="menu__item">
+									<a class="menu__link" href="#">Бизнес</a>
+								</li>
+								<li class="menu__item">
+									<a class="menu__link" href="#">Помощь</a>
+								</li>
+							</ul>
+							<a href="#" class="menu__link--login">
+								Вход и регистрация
+							</a>
+							<button class="btn add__ad">
+								Подать объявление
+							</button>
+						</nav>
+					</div>
 				</div>
-				<nav class="menu">
-					<ul class="menu__container">
-						<li class="menu__item"><a class="menu__link" href="#" data-category="cloth">Одежда</a></li>
-						<li class="menu__item"><a class="menu__link" href="#" data-category="foot">Обувь</a></li>
-						<li class="menu__item"><a class="menu__link" href="#" data-category="toy">Игрушки</a></li>
-						<li class="menu__item"><a class="menu__link" href="#" data-category="furniture">Мебель</a></li>
-						<li class="menu__item"><a class="menu__link" href="#" data-category="tech">Техника</a></li>
-					</ul>
-				</nav>
-				<button class="btn add__ad">
-					Подать объявление
-				</button>
-			</div>
-			<div class="search">
-				<form class="search__form">
-					<label class="search__label">
-						<input class="search__input" type="search">
-					</label>
-				</form>
-			</div>
+				<div class="container">
+					<div class="header-down">
+						<div class="logo">
+							<a href="index.html">
+								<img src="img/logo.svg" alt="">
+							</a>
+						</div>
+						<nav class="menu-category">
+							<ul class="menu-category__container">
+								<li class="menu-category__item">
+									<a class="menu-category__link" href="#" data-category="cloth">Одежда</a>
+								</li>
+								<li class="menu-category__item">
+									<a class="menu-category__link" href="#" data-category="foot">Обувь</a>
+								</li>
+								<li class="menu-category__item">
+									<a class="menu-category__link" href="#" data-category="toy">Игрушки</a>
+								</li>
+								<li class="menu-category__item">
+									<a class="menu-category__link" href="#" data-category="furniture">Мебель</a>
+								</li>
+								<li class="menu-category__item">
+									<a class="menu-category__link" href="#" data-category="tech">Техника</a>
+								</li>
+							</ul>
+						</nav>
+					</div>	
+				</div>
+				<!--Поисковая строка-->
+				<div class="container"> 
+					<div class="search">
+						<form class="search__form">
+							<label class="search__label">
+								<input class="search__input" type="search">
+							</label>
+						</form>
+					</div>
+				</div>
 		</div>
 	</header>
 
@@ -135,7 +174,7 @@
 						<span class="modal__description-item">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet, aut deleniti dolores ex explicabo fugit hic?</span>
 					</p>
 					<p>Цена: <span class="modal__cost-item">4000 ₽</span></p>
-					<button class="btn">Купить</button>
+					<button class="btn btn-buy">Купить</button>
 				</div>
 			</div>
 			<button class="modal__close">&#10008;</button>

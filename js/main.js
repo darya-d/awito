@@ -19,7 +19,7 @@ const modalDescriptionItem = document.querySelector('.modal__description-item');
 const modalCostItem = document.querySelector('.modal__cost-item');
 
 const searchInput = document.querySelector('.search__input');
-const menuContainer = document.querySelector('.menu__container');
+const menuContainer = document.querySelector('.menu-category__container');
 
 const srcModalImageAdd = modalImageAdd.src;                         // путь картинки по умолч в объявлении
 const textModalFileBtn = modalFileBtn.textContent;                  // текст кнопки "Добавить фото"
@@ -165,7 +165,7 @@ catalog.addEventListener('click', event => {
 menuContainer.addEventListener('click', event => {  
     const target = event.target;
 
-    if (target.className = 'menu__link') {
+    if (target.className = 'menu-category__link') {
         const result = dataBase.filter(item => item.category === target.dataset.category);
 
         renderCard(result);
