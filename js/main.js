@@ -29,6 +29,8 @@ const elementsModalSubmit = [...modalSubmit.elements]               // ... - о�
 
 const infoPhoto = {};
 
+let counter = dataBase.length;                                      // счетчик, итерируемый в событии modalSubmit после отправки нового объявления
+
 // *Функция отправки нового товара через подачу объявления из БД dataBase в local storage
 const saveDataBase = () => 
     localStorage.setItem('awito', JSON.stringify(dataBase));            // метод setItem отправиляет данные в нашу БД.
@@ -63,9 +65,9 @@ const closeModal = event => {
 const renderCard = (DB = dataBase) => {                                 // если фцкция будет вызываться пустой, то ей присвоится dataBase     
     catalog.textContent= '';                                            // очищаем каталог 
     
-    DB.forEach((item, i) => {                                           // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
+    DB.forEach(item => {                                           // метод forEach принимает callback функцию; добавляем новую li карточку в начале каталога
         catalog.insertAdjacentHTML('beforeend', `                      
-            <li class="card" data-id="${i}">
+            <li class="card" data-id="${item.id}">
                 <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test">
                 <div class="card__description">
                     <h3 class="card__header">${item.nameItem}</h3>
@@ -81,7 +83,8 @@ searchInput.addEventListener('input', () => {
     const valueSearch = searchInput.value.trim().toLowerCase();           // метод trim убирает пробелы в начале и в конце у значения value; метод toLowerCase приводит весь текст в нижнему регистру
 
     if (valueSearch.length > 2) {
-        const result = dataBase.filter(item => item.nameItem.toLowerCase().includes(valueSearch));
+        const result = dataBase.filter(item => item.nameItem.toLowerCase().includes(valueSearch) ||
+                                               item.descriptionItem.toLowerCase().includes(valueSearch));
         renderCard(result);
     };
 });
@@ -122,6 +125,7 @@ modalSubmit.addEventListener('submit', () => {
         itemObject[elem.name] = elem.value;                             // значение из name возьмется и сохранится как свойство объекта.
     } 
     
+    itemObject.id = counter++;                                          // каждую итерацию цикла counter id будет увеличитваться на 1.
     itemObject.image = infoPhoto.base64;
     dataBase.push(itemObject);                                          // добавляем новое объявление - объект - в массив dataBase.
     modalSubmit.reset();                                                // очищаем форму после отправки.
@@ -142,8 +146,8 @@ catalog.addEventListener('click', event => {
     const target = event.target;                                    // определяем target (в будущем - карточку).
     const card = target.closest('.card');
 
-    if (card) {                                  // выясняем, если у target родитель с классом .card
-        const item = dataBase[card.dataset.id];
+    if (card) {                                                     // выясняем, если у target родитель с классом .card
+        const item = dataBase.find(obj => obj.id === +card.dataset.id);    // id у объекта obj должен быть равен card.dataset.id. Знаком + переводим строку в число.
         
         modalImageItem.src = `data:image/jpeg;base64,${item.image}`;
         modalHeaderItem.textContent = item.nameItem;
