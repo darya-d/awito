@@ -19,6 +19,7 @@ const modalDescriptionItem = document.querySelector('.modal__description-item');
 const modalCostItem = document.querySelector('.modal__cost-item');
 
 const searchInput = document.querySelector('.search__input');
+const menuContainer = document.querySelector('.menu__container');
 
 const srcModalImageAdd = modalImageAdd.src;                         // путь картинки по умолч в объявлении
 const textModalFileBtn = modalFileBtn.textContent;                  // текст кнопки "Добавить фото"
@@ -29,7 +30,7 @@ const elementsModalSubmit = [...modalSubmit.elements]               // ... - о�
 
 const infoPhoto = {};
 
-let counter = dataBase.length;                                      // счетчик, итерируемый в событии modalSubmit после отправки нового объявления
+let counter = dataBase.length;                                      // счетчик количества объявлений, итерируемый в событии modalSubmit. Если объявлений нет, он равен нулю.
 
 // *Функция отправки нового товара через подачу объявления из БД dataBase в local storage
 const saveDataBase = () => 
@@ -160,6 +161,16 @@ catalog.addEventListener('click', event => {
     }
 });
 
+// * Событие клика по ссылкам-категориям товаров из меню
+menuContainer.addEventListener('click', event => {  
+    const target = event.target;
+
+    if (target.className = 'menu__link') {
+        const result = dataBase.filter(item => item.category === target.dataset.category);
+
+        renderCard(result);
+    }
+});
 
 modalAdd.addEventListener('click', closeModal);
 modalItem.addEventListener('click', closeModal);
